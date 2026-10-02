@@ -24,23 +24,21 @@ function say(t){
  u.lang='zh-TW';u.rate=.85;
  speechSynthesis.speak(u);
 }
-// v13：iPad / iPhone 不直接朗讀 Unicode 注音符號。
-// 改以國語示範字作為 TTS 發音代理；畫面與實際輸入仍維持原注音符號。
-const zhuyinSpeech={
- 'ㄅ':'玻','ㄆ':'坡','ㄇ':'摸','ㄈ':'佛',
- 'ㄉ':'得','ㄊ':'特','ㄋ':'呢','ㄌ':'勒',
- 'ㄍ':'哥','ㄎ':'科','ㄏ':'喝',
- 'ㄐ':'基','ㄑ':'七','ㄒ':'西',
- 'ㄓ':'知','ㄔ':'吃','ㄕ':'詩','ㄖ':'日',
- 'ㄗ':'資','ㄘ':'疵','ㄙ':'思',
- 'ㄧ':'衣','ㄨ':'屋','ㄩ':'迂',
- 'ㄚ':'啊','ㄛ':'喔','ㄜ':'鵝','ㄝ':'耶',
- 'ㄞ':'哀','ㄟ':'欸','ㄠ':'凹','ㄡ':'歐',
- 'ㄢ':'安','ㄣ':'恩','ㄤ':'骯','ㄥ':'亨','ㄦ':'兒'
-};
+// v14：37 個注音符號直接播放教育部《國語注音符號手冊》EPUB 官方錄音。
+const zhuyinAudio={"ㄅ":"./audio/zhuyin-01.mp3","ㄆ":"./audio/zhuyin-02.mp3","ㄇ":"./audio/zhuyin-03.mp3","ㄈ":"./audio/zhuyin-04.mp3","ㄉ":"./audio/zhuyin-05.mp3","ㄊ":"./audio/zhuyin-06.mp3","ㄋ":"./audio/zhuyin-07.mp3","ㄌ":"./audio/zhuyin-08.mp3","ㄍ":"./audio/zhuyin-09.mp3","ㄎ":"./audio/zhuyin-10.mp3","ㄏ":"./audio/zhuyin-11.mp3","ㄐ":"./audio/zhuyin-12.mp3","ㄑ":"./audio/zhuyin-13.mp3","ㄒ":"./audio/zhuyin-14.mp3","ㄓ":"./audio/zhuyin-15.mp3","ㄔ":"./audio/zhuyin-16.mp3","ㄕ":"./audio/zhuyin-17.mp3","ㄖ":"./audio/zhuyin-18.mp3","ㄗ":"./audio/zhuyin-19.mp3","ㄘ":"./audio/zhuyin-20.mp3","ㄙ":"./audio/zhuyin-21.mp3","ㄧ":"./audio/zhuyin-22.mp3","ㄨ":"./audio/zhuyin-23.mp3","ㄩ":"./audio/zhuyin-24.mp3","ㄚ":"./audio/zhuyin-25.mp3","ㄛ":"./audio/zhuyin-26.mp3","ㄜ":"./audio/zhuyin-27.mp3","ㄝ":"./audio/zhuyin-28.mp3","ㄞ":"./audio/zhuyin-29.mp3","ㄟ":"./audio/zhuyin-30.mp3","ㄠ":"./audio/zhuyin-31.mp3","ㄡ":"./audio/zhuyin-32.mp3","ㄢ":"./audio/zhuyin-33.mp3","ㄣ":"./audio/zhuyin-34.mp3","ㄤ":"./audio/zhuyin-35.mp3","ㄥ":"./audio/zhuyin-36.mp3","ㄦ":"./audio/zhuyin-37.mp3"};
+let zhuyinPlayer=null;
 function phoneticSay(x){
  const names={'ˉ':'一聲','ˊ':'二聲','ˇ':'三聲','ˋ':'四聲','˙':'輕聲'};
- say(names[x]||zhuyinSpeech[x]||x);
+ if(zhuyinAudio[x]){
+   try{
+     if(zhuyinPlayer){zhuyinPlayer.pause();zhuyinPlayer.currentTime=0;}
+     zhuyinPlayer=new Audio(zhuyinAudio[x]);
+     zhuyinPlayer.preload='auto';
+     zhuyinPlayer.play().catch(()=>say(x));
+     return;
+   }catch(e){}
+ }
+ say(names[x]||x);
 }
 const nextWords={
 '我':['要','想','好','可以','不要'],
@@ -142,4 +140,4 @@ function renderFavs(){
 $('speak').onclick=()=>say(sentence);
 $('clear').onclick=()=>{sentence='';composing='';render()};
 makeKeys();renderFavs();render();
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=13');
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=14');
