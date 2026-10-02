@@ -85,12 +85,7 @@ function makeKeys(){
  };
  $('keys').appendChild(back);
 
- // 補齊該列，讓下一列的一聲鍵可以置中
- for(let i=0;i<11;i++){
-  const z=document.createElement('span');z.className='blank';$('keys').appendChild(z);
- }
-
- // 一聲鍵：依參考板設計為中央長條白鍵＋紅色圓點
+ // 一聲鍵與刪除鍵同行：刪除鍵在左，一聲長條鍵接在右側
  const wrap=document.createElement('div');
  wrap.className='one-tone-wrap';
  const tone1=document.createElement('button');
@@ -106,6 +101,9 @@ function makeKeys(){
  };
  wrap.appendChild(tone1);
  $('keys').appendChild(wrap);
+ for(let i=0;i<4;i++){
+  const z=document.createElement('span');z.className='blank';$('keys').appendChild(z);
+ }
 }
 let favs=JSON.parse(localStorage.getItem('zhuyinFavs')||'["我要","不要","幫忙","上廁所","休息"]');
 function saveFav(i){
@@ -128,4 +126,4 @@ function renderFavs(){
 $('speak').onclick=()=>say(sentence);
 $('clear').onclick=()=>{sentence='';composing='';render()};
 makeKeys();renderFavs();render();
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=4');
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=5');
