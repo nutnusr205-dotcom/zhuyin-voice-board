@@ -126,4 +126,4 @@ function renderFavs(){
 $('speak').onclick=()=>say(sentence);
 $('clear').onclick=()=>{sentence='';composing='';render()};
 makeKeys();renderFavs();render();
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=5');
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=6');
