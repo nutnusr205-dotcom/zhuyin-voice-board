@@ -263,45 +263,38 @@ function isKnownBaseSyllable(k) {
 function zhuyinCandidates(input) {
   if(!input) return [];
   const raw=input;
-  const toneMatch=raw.match(/[ˉˊˇˋ˙]$/);
-  const lookup=normalizeZhuyinKey(raw);
-  const noTone=lookup.replace(/[ˊˇˋ˙]$/,'');
+  const hasTone=/[ˉˊˇˋ˙]$/.test(raw);
+  const isFirst=raw.endsWith('ˉ');
+  const base=raw.replace(/[ˉˊˇˋ˙]$/,'');
   let result=[];
 
-  // 1. 精確聲調候選
-  if(toneMatch && dict[raw]) result.push(...dict[raw]);
+  // 一聲：國語注音慣例以「無調號」表示，因此先查基本音節。
+  if(isFirst) {
+    if(dict[base]) result.push(...dict[base]);
+    if(dict[raw]) result.unshift(...dict[raw]);
+    return [...new Set(result)].slice(0,18);
+  }
 
-  // 2. 完整基本音節候選
-  if(dict[noTone]) result.push(...dict[noTone]);
+  // 二、三、四、輕聲：只接受相同完整注音＋聲調的候選。
+  // 若尚未建立該聲調資料，寧可不顯示，也不提供錯音候選。
+  if(hasTone) {
+    if(dict[raw]) result.push(...dict[raw]);
+    return [...new Set(result)].slice(0,18);
+  }
 
-  // 3. 部分輸入：彙整所有以目前拼音開頭的候選
+  // 尚未按聲調：
+  // 完整基本音節可顯示該音節的無調候選；
+  // 部分輸入只彙整「真正以目前注音序列開頭」的字庫項目。
+  if(dict[base]) result.push(...dict[base]);
   for(const [k,v] of Object.entries(dict)) {
-    const nk=normalizeZhuyinKey(k).replace(/[ˊˇˋ˙]$/,'');
-    if(nk.startsWith(noTone)) result.push(...v);
-  }
-
-  // 4. 若完整合法音節仍沒有候選，改找同聲母/同介音家族，
-  //    避免 AAC 使用時候選區整排空白。
-  if(!result.length && noTone) {
-    const first=noTone[0];
-    for(const [k,v] of Object.entries(dict)) {
-      const nk=normalizeZhuyinKey(k).replace(/[ˊˇˋ˙]$/,'');
-      if(nk.startsWith(first)) result.push(...v);
-    }
-  }
-
-  // 5. 最後安全候選：僅在合法音節時顯示常用 AAC 字，
-  //    讓使用者仍可繼續操作，不會得到空白區。
-  if(!result.length && isKnownBaseSyllable(noTone)) {
-    result.push('我','要','不','好','是','有','吃','喝','水','去','來','幫','休息');
+    const kb=k.replace(/[ˉˊˇˋ˙]$/,'');
+    if(kb.startsWith(base)) result.push(...v);
   }
 
   return [...new Set(result)].slice(0,18);
 }
 
-// v10 字庫完整性診斷：可在瀏覽器 Console 查看仍缺少「專屬候選」的基本音節。
-// 使用者介面會由 fallback 保證不空白；此清單供後續逐步補成精確字庫。
+
 const ZHUYIN_MISSING_DIRECT = ZHUYIN_BASE_SYLLABLES.filter(s => !dict[s]);
-console.info('[注音發聲板 v10] 基本音節數:', ZHUYIN_BASE_SYLLABLES.length,
-             '已有直接候選:', ZHUYIN_BASE_SYLLABLES.length-ZHUYIN_MISSING_DIRECT.length,
-             '待補專屬候選:', ZHUYIN_MISSING_DIRECT.length);
+console.info('[注音發聲板 v11 精確讀音模式] 基本音節:', ZHUYIN_BASE_SYLLABLES.length,
+             '待補直接候選:', ZHUYIN_MISSING_DIRECT.length);
