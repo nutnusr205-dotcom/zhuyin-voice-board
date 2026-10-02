@@ -26,7 +26,7 @@ const keyboardRows=[
 
 let composing='',sentence='';
 const $=id=>document.getElementById(id);
-const tones=['ˉ','ˊ','ˇ','ˋ','˙'];
+const tones=['ˊ','ˇ','ˋ','˙'];
 
 function say(t){
  if(!t)return;
@@ -40,10 +40,11 @@ function phoneticSay(x){
  say(names[x]||x);
 }
 function candidates(){
- let exact=dict[composing]||[];
- if(!exact.length&&composing){
+ const lookup=composing.endsWith('ˉ')?composing.slice(0,-1):composing;
+ let exact=dict[composing]||dict[lookup]||[];
+ if(!exact.length&&lookup){
   const all=[];
-  for(const [k,v] of Object.entries(dict)) if(k.startsWith(composing)) all.push(...v);
+  for(const [k,v] of Object.entries(dict)) if(k.startsWith(lookup)) all.push(...v);
   exact=[...new Set(all)];
  }
  return exact.slice(0,12);
@@ -67,20 +68,44 @@ function addKey(x){
  $('keys').appendChild(b);
 }
 function makeKeys(){
- keyboardRows.forEach((row,ri)=>{
+ keyboardRows.forEach(row=>{
   row.forEach(addKey);
   for(let i=row.length;i<12;i++){
    const z=document.createElement('span');z.className='blank';$('keys').appendChild(z);
   }
  });
+
+ // 刪除鍵
  const back=document.createElement('button');
  back.className='key action';back.textContent='⌫';
- back.onclick=()=>{if(composing)composing=composing.slice(0,-1);else sentence=sentence.slice(0,-1);render()};
+ back.onclick=()=>{
+  if(composing) composing=composing.slice(0,-1);
+  else sentence=sentence.slice(0,-1);
+  render();
+ };
  $('keys').appendChild(back);
- const space=document.createElement('button');
- space.className='key action';space.textContent='空格';
- space.onclick=()=>{sentence+=' ';render()};
- $('keys').appendChild(space);
+
+ // 補齊該列，讓下一列的一聲鍵可以置中
+ for(let i=0;i<11;i++){
+  const z=document.createElement('span');z.className='blank';$('keys').appendChild(z);
+ }
+
+ // 一聲鍵：依參考板設計為中央長條白鍵＋紅色圓點
+ const wrap=document.createElement('div');
+ wrap.className='one-tone-wrap';
+ const tone1=document.createElement('button');
+ tone1.className='one-tone';
+ tone1.setAttribute('aria-label','一聲');
+ tone1.title='一聲';
+ tone1.innerHTML='<span class="one-tone-dot"></span>';
+ tone1.onclick=()=>{
+  // 一聲以 ˉ 記錄；候選查詢同時相容「未標一聲」的字典資料
+  if(composing && !/[ˉˊˇˋ˙]$/.test(composing)) composing+='ˉ';
+  phoneticSay('ˉ');
+  render();
+ };
+ wrap.appendChild(tone1);
+ $('keys').appendChild(wrap);
 }
 let favs=JSON.parse(localStorage.getItem('zhuyinFavs')||'["我要","不要","幫忙","上廁所","休息"]');
 function saveFav(i){
@@ -103,4 +128,4 @@ function renderFavs(){
 $('speak').onclick=()=>say(sentence);
 $('clear').onclick=()=>{sentence='';composing='';render()};
 makeKeys();renderFavs();render();
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=3');
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=4');
