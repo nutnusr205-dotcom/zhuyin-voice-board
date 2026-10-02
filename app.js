@@ -24,9 +24,23 @@ function say(t){
  u.lang='zh-TW';u.rate=.85;
  speechSynthesis.speak(u);
 }
+// v13：iPad / iPhone 不直接朗讀 Unicode 注音符號。
+// 改以國語示範字作為 TTS 發音代理；畫面與實際輸入仍維持原注音符號。
+const zhuyinSpeech={
+ 'ㄅ':'玻','ㄆ':'坡','ㄇ':'摸','ㄈ':'佛',
+ 'ㄉ':'得','ㄊ':'特','ㄋ':'呢','ㄌ':'勒',
+ 'ㄍ':'哥','ㄎ':'科','ㄏ':'喝',
+ 'ㄐ':'基','ㄑ':'七','ㄒ':'西',
+ 'ㄓ':'知','ㄔ':'吃','ㄕ':'詩','ㄖ':'日',
+ 'ㄗ':'資','ㄘ':'疵','ㄙ':'思',
+ 'ㄧ':'衣','ㄨ':'屋','ㄩ':'迂',
+ 'ㄚ':'啊','ㄛ':'喔','ㄜ':'鵝','ㄝ':'耶',
+ 'ㄞ':'哀','ㄟ':'欸','ㄠ':'凹','ㄡ':'歐',
+ 'ㄢ':'安','ㄣ':'恩','ㄤ':'骯','ㄥ':'亨','ㄦ':'兒'
+};
 function phoneticSay(x){
  const names={'ˉ':'一聲','ˊ':'二聲','ˇ':'三聲','ˋ':'四聲','˙':'輕聲'};
- say(names[x]||x);
+ say(names[x]||zhuyinSpeech[x]||x);
 }
 const nextWords={
 '我':['要','想','好','可以','不要'],
@@ -128,4 +142,4 @@ function renderFavs(){
 $('speak').onclick=()=>say(sentence);
 $('clear').onclick=()=>{sentence='';composing='';render()};
 makeKeys();renderFavs();render();
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=12');
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=13');

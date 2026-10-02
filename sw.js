@@ -1,5 +1,5 @@
-const CACHE='zhuyin-voice-board-v12';
-const ASSETS=['./','./index.html','./app.js?v=12','./zhuyin-dictionary.js?v=12','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
+const CACHE='zhuyin-voice-board-v13';
+const ASSETS=['./','./index.html','./app.js?v=13','./zhuyin-dictionary.js?v=13','./manifest.webmanifest','./icon-192.png','./icon-512.png'];
 self.addEventListener('install',e=>{self.skipWaiting();e.waitUntil(caches.open(CACHE).then(c=>c.addAll(ASSETS)))});
 self.addEventListener('activate',e=>e.waitUntil(Promise.all([
  caches.keys().then(keys=>Promise.all(keys.filter(k=>k!==CACHE).map(k=>caches.delete(k)))),
