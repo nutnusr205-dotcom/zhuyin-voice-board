@@ -1,14 +1,3 @@
-const dict={
-'ㄅ':['不','把','被','比','白','爸','班','幫'],'ㄅㄚ':['八','巴','吧','拔','把','爸'],'ㄅㄚˋ':['爸','霸','罷'],
-'ㄨ':['我','無','五','物','午'],'ㄨㄛ':['我','握','窩'],'ㄨㄛˇ':['我'],
-'ㄋ':['你','那','年','能','哪'],'ㄋㄧ':['你','尼','泥','妮'],'ㄋㄧˇ':['你','擬'],
-'ㄏ':['好','和','喝','很','會','還'],'ㄏㄠ':['好','號','豪'],'ㄏㄠˇ':['好'],
-'ㄏㄜ':['喝','和','河','合'],'ㄏㄜˉ':['喝'],
-'ㄕ':['是','想','上','水','說','什'],'ㄒ':['想','小','先','喜','謝'],
-'ㄒㄧㄤ':['想','香','鄉','相'],'ㄒㄧㄤˇ':['想','響'],
-'ㄕㄨㄟˇ':['水'],'ㄋㄧㄡˊ':['牛'],'ㄋㄞˇ':['奶']
-};
-
 const rows=[
  ['ㄅ','ㄆ','ˇ','ˋ','ㄓ','ˊ','˙','ㄚ','ㄞ','ㄢ','ㄦ',null],
  ['ㄇ','ㄈ','ㄘ','ㄌ','ㄛ','ㄜ','ˉ','ㄟ','ㄣ','ㄧ',null,null],
@@ -39,21 +28,34 @@ function phoneticSay(x){
  const names={'ˉ':'一聲','ˊ':'二聲','ˇ':'三聲','ˋ':'四聲','˙':'輕聲'};
  say(names[x]||x);
 }
+const nextWords={
+'我':['要','想','好','可以','不要'],
+'我要':['喝','吃','水','休息','上廁所','幫忙'],
+'我想':['喝','吃','要','休息','回家'],
+'喝':['水','牛奶','果汁','飲料','茶'],
+'吃':['飯','水果','麵包','點心','藥'],
+'我要喝':['水','牛奶','果汁','飲料'],
+'我要吃':['飯','水果','麵包','點心'],
+'我要去':['廁所','教室','外面','回家'],
+'我不舒服':['頭痛','肚子痛','想休息','要幫忙'],
+'要':['喝','吃','水','休息','幫忙'],
+'不要':['吃','喝','碰','去'],
+'好':['了','的','嗎']
+};
+function phraseCandidates(){
+ const keys=Object.keys(nextWords).sort((a,b)=>b.length-a.length);
+ const k=keys.find(k=>sentence.endsWith(k));
+ return k?nextWords[k]:[];
+}
 function candidates(){
- const lookup=composing.endsWith('ˉ')?composing.slice(0,-1):composing;
- let exact=dict[composing]||dict[lookup]||[];
- if(!exact.length&&lookup){
-  const all=[];
-  for(const [k,v] of Object.entries(dict)) if(k.startsWith(lookup)) all.push(...v);
-  exact=[...new Set(all)];
- }
- return exact.slice(0,12);
+  return zhuyinCandidates(composing);
 }
 function render(){
  $('sentence').textContent=sentence||'請用下方注音開始輸入…';
  $('compose').textContent=composing||'　';
  $('cands').innerHTML='';
- candidates().forEach(w=>{
+ const list=composing?candidates():phraseCandidates();
+ list.forEach(w=>{
   const b=document.createElement('button');
   b.className='cand';b.textContent=w;
   b.onclick=()=>{sentence+=w;composing='';say(w);render()};
@@ -126,4 +128,4 @@ function renderFavs(){
 $('speak').onclick=()=>say(sentence);
 $('clear').onclick=()=>{sentence='';composing='';render()};
 makeKeys();renderFavs();render();
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=6');
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=9');
