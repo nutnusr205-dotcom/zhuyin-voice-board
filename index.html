@@ -22,7 +22,7 @@ main{max-width:1440px;margin:auto;padding:12px 18px 8px}
 #cands{display:flex;gap:8px;overflow-x:auto;min-height:0;padding:3px 0 2px}
 .cand{min-width:66px;border:1px solid #a8d9f7;border-radius:14px;background:#fff;font-size:26px;padding:10px}
 .keyboard{background:#dff3ff;border-radius:28px;padding:14px}
-#keys{display:grid;grid-template-columns:repeat(12,minmax(58px,1fr));gap:8px}
+#keys{display:grid;grid-template-columns:repeat(11,minmax(58px,1fr));gap:8px}
 .key{height:70px;border:0;border-radius:16px;background:#fff;box-shadow:0 4px 10px #00000012;font-size:34px;line-height:1;writing-mode:horizontal-tb;text-orientation:mixed;transform:none;font-family:"Noto Sans TC","PingFang TC","Microsoft JhengHei",sans-serif}
 .key.tone{background:#ffe99b}
 .key.action{background:#bce9c8;font-size:22px}
@@ -39,25 +39,30 @@ footer{text-align:center;font-size:19px;color:#587891;padding:12px 0 2px;font-we
  #favorites{gap:6px}
  .fav{font-size:18px;min-height:60px}
  .keyboard{width:100%;max-width:100%;padding:10px 8px;overflow:hidden}
- #keys{width:100%;min-width:0;grid-template-columns:repeat(12,minmax(0,1fr));gap:4px}
+ #keys{width:100%;min-width:0;grid-template-columns:repeat(11,minmax(0,1fr));gap:4px}
  .key{width:100%;min-width:0;height:58px;padding:0;font-size:27px;border-radius:11px}
  .one-tone-wrap{min-width:0}
  .one-tone{min-width:0;height:60px}
  .one-tone-dot{width:46px;height:46px}
 }
 @media(max-width:480px){
- main{padding:6px}
- .panel{padding:10px}
- .top{gap:7px}
- #sentence{font-size:23px;min-height:68px;padding:12px}
- .big{font-size:19px;padding:13px 12px}
- .label{font-size:17px}
+ main{padding:5px 6px 6px}
+ .panel{padding:10px 9px 8px;margin-bottom:8px;border-radius:20px}
+ .top{gap:6px}
+ #sentence{font-size:22px;min-height:64px;padding:10px 11px;border-radius:18px}
+ .big{font-size:18px;padding:12px 10px;border-radius:17px}
+ .label{font-size:17px;margin:11px 0 7px}
  #favorites{gap:4px}
- .fav{font-size:17px;min-height:56px;padding:2px}
- .keyboard{padding:9px 6px;border-radius:22px}
- #keys{gap:3px}
- .key{height:55px;font-size:25px;border-radius:10px}
- footer{font-size:16px}
+ .fav{font-size:17px;min-height:54px;padding:2px;border-radius:16px}
+ #compose{min-height:30px;font-size:24px;padding:2px 5px}
+ #cands{gap:5px;padding:1px 0}
+ .cand{min-width:54px;font-size:22px;padding:7px}
+ .keyboard{padding:8px 5px;border-radius:22px}
+ #keys{gap:4px}
+ .key{height:58px;font-size:27px;border-radius:11px}
+ .one-tone{height:60px}
+ .one-tone-dot{width:46px;height:46px}
+ footer{font-size:16px;padding:9px 0 1px}
 }
 </style>
 </head>
@@ -77,8 +82,8 @@ footer{text-align:center;font-size:19px;color:#587891;padding:12px 0 2px;font-we
 <section class="keyboard"><div id="keys"></div></section>
 <footer>國立臺南大學特教系 臧永佳 AI設計開發</footer>
 </main>
-<script src="./zhuyin-dictionary.js?v=14.2"></script>
-<script src="./app.js?v=14.2"></script>
+<script src="./zhuyin-dictionary.js?v=14.3"></script>
+<script src="./app.js?v=14.3"></script>
 <div style="text-align:center;font-size:12px;color:#777;margin:6px 0 12px">字音資料：教育部《國語辭典簡編本》（2026-09-29）；注音發音：教育部《國語注音符號手冊》（CC BY 4.0）</div>
 </body>
 </html>

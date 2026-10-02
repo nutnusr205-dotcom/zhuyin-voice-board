@@ -84,7 +84,7 @@ function addKey(x){
 function makeKeys(){
  keyboardRows.forEach(row=>{
   row.forEach(addKey);
-  for(let i=row.length;i<12;i++){
+  for(let i=row.length;i<11;i++){
    const z=document.createElement('span');z.className='blank';$('keys').appendChild(z);
   }
  });
@@ -115,7 +115,7 @@ function makeKeys(){
  };
  wrap.appendChild(tone1);
  $('keys').appendChild(wrap);
- for(let i=0;i<4;i++){
+ for(let i=0;i<3;i++){
   const z=document.createElement('span');z.className='blank';$('keys').appendChild(z);
  }
 }
@@ -140,4 +140,4 @@ function renderFavs(){
 $('speak').onclick=()=>say(sentence);
 $('clear').onclick=()=>{sentence='';composing='';render()};
 makeKeys();renderFavs();render();
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=14.2');
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=14.3');
