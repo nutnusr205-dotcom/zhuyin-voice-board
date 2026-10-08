@@ -14,6 +14,8 @@ const keyboardRows=[
 ];
 
 let composing='',sentence='';
+const CANDIDATES_PER_PAGE=8;
+let candidatePage=0;
 const $=id=>document.getElementById(id);
 const tones=['ˊ','ˇ','ˋ','˙'];
 
@@ -155,4 +157,4 @@ function renderFavs(){
 $('speak').onclick=()=>say(sentence);
 $('clear').onclick=()=>{sentence='';composing='';candidatePage=0;render()};
 makeKeys();renderFavs();render();
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=15.3');
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=15.4');

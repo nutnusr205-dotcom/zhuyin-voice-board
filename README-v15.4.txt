@@ -1,0 +1,1 @@
+修正 v15.3 候選字未顯示：補上 CANDIDATES_PER_PAGE 與 candidatePage 初始化，避免 JavaScript ReferenceError。每頁8字，可翻頁。
