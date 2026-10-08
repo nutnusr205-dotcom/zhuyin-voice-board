@@ -112,6 +112,83 @@ footer{text-align:center;font-size:19px;color:#587891;padding:12px 0 2px;font-we
  .key{height:64px;min-height:64px;font-size:29px}
  .one-tone{height:64px}
 }
+
+/* v14.6: one-screen layout on iPad landscape/portrait and desktop.
+   Key dimensions follow viewport height while retaining accessible targets. */
+@media(min-width:601px){
+ html,body{height:100%;overflow:hidden}
+ main{height:100dvh;max-height:100dvh;box-sizing:border-box;display:flex;flex-direction:column;gap:clamp(3px,.6vh,9px);padding:clamp(5px,.8vh,12px);overflow:hidden}
+ .panel{flex:0 1 auto;min-height:0;margin-bottom:0;padding:clamp(7px,1vh,15px)}
+ .top{gap:8px}
+ #sentence{min-height:0;font-size:clamp(20px,2.6vh,36px);padding:clamp(7px,1vh,13px)}
+ .big{font-size:clamp(17px,2.5vh,29px);padding:clamp(8px,1vh,14px)}
+ .label{font-size:clamp(14px,1.8vh,21px);margin:clamp(4px,.8vh,10px) 0}
+ #favorites{gap:7px}
+ .fav{min-height:0;font-size:clamp(16px,2.3vh,26px);padding:clamp(6px,1vh,13px)}
+ #compose{min-height:0;font-size:clamp(20px,2.6vh,30px);padding:3px 5px}
+ #cands{gap:5px;padding:0}
+ .cand{min-width:0;font-size:clamp(17px,2.2vh,25px);padding:clamp(4px,.7vh,8px)}
+ .keyboard{flex:1 1 auto;min-height:0;padding:clamp(5px,.8vh,12px);overflow:hidden;display:flex}
+ #keys{flex:1;min-height:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));grid-template-rows:repeat(8,minmax(0,1fr));gap:clamp(3px,.7vh,9px)}
+ .key{height:100%;min-height:0;font-size:clamp(23px,4vh,46px);border-radius:clamp(9px,1.4vh,17px)}
+ .key.action{font-size:clamp(17px,2.8vh,28px)}
+ .one-tone-wrap{min-height:0}
+ .one-tone{height:100%;min-height:0}
+ .one-tone-dot{width:clamp(28px,5vh,58px);height:clamp(28px,5vh,58px)}
+ footer{flex:0 0 auto;font-size:clamp(12px,1.6vh,19px);padding:1px 0}
+ footer small{font-size:clamp(10px,1.3vh,14px)}
+}
+@media(min-width:601px) and (max-height:680px){
+ .panel{padding:5px 9px}
+ .label{margin:2px 0}
+ .fav{padding:4px}
+ #compose{padding:0 5px}
+ #keys{gap:3px}
+}
+
+/* v14.7: Restore original 11-column arrangement on iPad/desktop.
+   Five rows, bold large keys, viewport-fit without page scrolling. */
+@media(min-width:601px){
+ #keys{grid-template-columns:repeat(11,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr));gap:clamp(4px,.8vh,9px)}
+ .blank{display:block;visibility:hidden}
+ .key{height:100%;min-height:0;min-width:0;padding:0;font-size:clamp(27px,4vh,45px);font-weight:900;color:#0874dc;border-radius:12px}
+ .key.action{font-size:clamp(22px,3vh,30px)}
+ .one-tone-wrap{grid-column:2 / span 7}
+ .one-tone{height:100%;min-height:0}
+ .keyboard{flex:1 1 auto;min-height:0}
+}
+
+/* v14.8: iPhone returns to 11 columns / five rows, no vertical keyboard scrolling. */
+@media(max-width:600px){
+ html,body{margin:0;min-height:100%;overflow-x:hidden}
+ main{height:calc(100dvh - 30px);max-height:calc(100dvh - 30px);min-height:0;display:flex;flex-direction:column;gap:4px;padding:5px 5px 1px;overflow:hidden}
+ .panel{flex:0 1 auto;min-height:0;margin:0;padding:7px 7px 4px;border-radius:14px}
+ .top{gap:5px}
+ #sentence{min-height:0;padding:7px;font-size:clamp(17px,2.8vh,23px);border-radius:12px;overflow-wrap:anywhere}
+ .big{font-size:clamp(14px,2.3vh,18px);padding:8px 7px;border-radius:11px}
+ .label{font-size:clamp(12px,1.9vh,15px);margin:5px 0 4px}
+ #favorites{gap:3px}
+ .fav{min-height:0;padding:4px 1px;font-size:clamp(12px,1.8vh,16px);border-radius:9px;overflow-wrap:anywhere}
+ #compose{min-height:0;font-size:clamp(18px,2.5vh,24px);padding:2px 3px}
+ #cands{gap:3px;padding:1px 0}
+ .cand{min-width:40px;font-size:clamp(16px,2.3vh,21px);padding:3px}
+ .keyboard{flex:1 1 auto;min-height:0;display:flex;overflow:hidden;padding:5px 3px;border-radius:14px}
+ #keys{flex:1;min-height:0;width:100%;display:grid;grid-template-columns:repeat(11,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr));gap:3px}
+ .key{height:100%;min-height:0;min-width:0;width:100%;padding:0;font-size:clamp(19px,5.5vw,27px);font-weight:900;color:#0874dc;border-radius:7px;touch-action:manipulation}
+ .key.action{font-size:clamp(13px,3.7vw,18px)}
+ .blank{display:block;visibility:hidden}
+ .one-tone-wrap{grid-column:2 / span 7;min-width:0;min-height:0}
+ .one-tone{height:100%;min-height:0}
+ .one-tone-dot{width:clamp(26px,5vh,44px);height:clamp(26px,5vh,44px)}
+ footer{flex:0 0 auto;font-size:clamp(11px,1.7vh,14px);padding:1px 0}
+}
+@media(max-width:600px) and (max-height:650px){
+ .panel{padding:4px 6px 2px}
+ .label{margin:2px 0}
+ .fav{padding:2px 1px}
+ .keyboard{padding:3px}
+ #keys{gap:2px}
+}
 </style>
 </head>
 <body>
@@ -130,8 +207,8 @@ footer{text-align:center;font-size:19px;color:#587891;padding:12px 0 2px;font-we
 <section class="keyboard"><div id="keys"></div></section>
 <footer>國立臺南大學特教系 臧永佳 AI設計開發</footer>
 </main>
-<script src="./zhuyin-dictionary.js?v=14.5"></script>
-<script src="./app.js?v=14.5"></script>
+<script src="./zhuyin-dictionary.js?v=14.8"></script>
+<script src="./app.js?v=14.8"></script>
 <div style="text-align:center;font-size:12px;color:#777;margin:6px 0 12px">字音資料：教育部《國語辭典簡編本》（2026-09-29）；注音發音：教育部《國語注音符號手冊》（CC BY 4.0）</div>
 </body>
 </html>
