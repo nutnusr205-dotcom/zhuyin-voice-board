@@ -67,18 +67,33 @@ function render(){
  $('compose').textContent=composing||'　';
  $('cands').innerHTML='';
  const list=composing?candidates():phraseCandidates();
- list.forEach(w=>{
+ const totalPages=Math.max(1,Math.ceil(list.length/CANDIDATES_PER_PAGE));
+ candidatePage=Math.min(candidatePage,totalPages-1);
+ const pageWords=list.slice(candidatePage*CANDIDATES_PER_PAGE,(candidatePage+1)*CANDIDATES_PER_PAGE);
+ if(totalPages>1){
+  const prev=document.createElement('button');prev.className='cand-page-nav';prev.textContent='◀';
+  prev.setAttribute('aria-label','上一頁候選字');prev.disabled=candidatePage===0;
+  prev.onclick=()=>{candidatePage--;render()};$('cands').appendChild(prev);
+ }
+ pageWords.forEach(w=>{
   const b=document.createElement('button');
   b.className='cand';b.textContent=w;
-  b.onclick=()=>{sentence+=w;composing='';say(w);render()};
+  b.onclick=()=>{sentence+=w;composing='';candidatePage=0;say(w);render()};
   $('cands').appendChild(b);
  });
+ if(totalPages>1){
+  const next=document.createElement('button');next.className='cand-page-nav';next.textContent='▶';
+  next.setAttribute('aria-label','下一頁候選字');next.disabled=candidatePage>=totalPages-1;
+  next.onclick=()=>{candidatePage++;render()};$('cands').appendChild(next);
+  const info=document.createElement('span');info.className='cand-page-info';info.textContent=`${candidatePage+1}/${totalPages}頁`;
+  $('cands').appendChild(info);
+ }
 }
 function addKey(x){
  const b=document.createElement('button');
  b.className='key '+(tones.includes(x)?'tone':'');
  b.textContent=x;
- b.onclick=()=>{composing+=x;phoneticSay(x);render()};
+ b.onclick=()=>{composing+=x;candidatePage=0;phoneticSay(x);render()};
  $('keys').appendChild(b);
 }
 function makeKeys(){
@@ -95,7 +110,7 @@ function makeKeys(){
  back.onclick=()=>{
   if(composing) composing=composing.slice(0,-1);
   else sentence=sentence.slice(0,-1);
-  render();
+  candidatePage=0;render();
  };
  $('keys').appendChild(back);
 
@@ -110,7 +125,7 @@ function makeKeys(){
  tone1.onclick=()=>{
   // 一聲以 ˉ 記錄；候選查詢同時相容「未標一聲」的字典資料
   if(composing && !/[ˉˊˇˋ˙]$/.test(composing)) composing+='ˉ';
-  phoneticSay('ˉ');
+  candidatePage=0;phoneticSay('ˉ');
   render();
  };
  wrap.appendChild(tone1);
@@ -138,6 +153,6 @@ function renderFavs(){
  });
 }
 $('speak').onclick=()=>say(sentence);
-$('clear').onclick=()=>{sentence='';composing='';render()};
+$('clear').onclick=()=>{sentence='';composing='';candidatePage=0;render()};
 makeKeys();renderFavs();render();
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=15.1');
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=15.3');

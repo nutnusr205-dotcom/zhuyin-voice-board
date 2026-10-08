@@ -69,6 +69,19 @@ footer .source{display:block;font-size:clamp(11px,1.2vw,14px);font-weight:400;li
  #keys{grid-template-rows:repeat(5,clamp(32px,8.4vw,39px))}
  footer .source{font-size:10px}
 }
+
+/* Large, fixed-size candidate pages: 8 entries, no horizontal swiping */
+#cands{overflow-x:hidden;flex-wrap:wrap;align-content:center;min-height:58px;gap:5px}
+.cand{min-width:0;min-height:48px;padding:4px 10px;flex:0 0 auto}
+.cand-page-nav{flex:0 0 auto;min-width:52px;min-height:50px;border:2px solid #6ab9f1;border-radius:12px;background:#d9efff;color:#0759b3;font-size:25px;font-weight:900;touch-action:manipulation}
+.cand-page-nav:disabled{opacity:.32}
+.cand-page-info{font-size:16px;font-weight:800;color:#102f4b;white-space:nowrap}
+@media(max-width:600px){
+ #cands{min-height:58px;gap:4px}
+ .cand{font-size:23px;min-height:43px;padding:3px 7px}
+ .cand-page-nav{min-width:44px;min-height:44px;font-size:23px}
+ .cand-page-info{font-size:13px}
+}
 </style>
 </head>
 <body>
@@ -87,8 +100,8 @@ footer .source{display:block;font-size:clamp(11px,1.2vw,14px);font-weight:400;li
 <section class="keyboard"><div id="keys"></div></section>
 <footer>國立臺南大學特教系 臧永佳 AI設計開發<span class="source">字音資料：教育部《國語辭典簡編本》（2026-09-29）；注音發音：教育部《國語注音符號手冊》（CC BY 4.0）</span></footer>
 </main>
-<script src="./zhuyin-dictionary.js?v=15.1"></script>
-<script src="./app.js?v=15.1"></script>
+<script src="./zhuyin-dictionary.js?v=15.3"></script>
+<script src="./app.js?v=15.3"></script>
 
 </body>
 </html>
