@@ -14,7 +14,7 @@ const keyboardRows=[
 ];
 
 let composing='',sentence='';
-const CANDIDATES_PER_PAGE=8;
+const candidatesPerPage=()=>window.matchMedia("(max-width:600px)").matches?8:12;
 let candidatePage=0;
 const $=id=>document.getElementById(id);
 const tones=['ˊ','ˇ','ˋ','˙'];
@@ -69,6 +69,7 @@ function render(){
  $('compose').textContent=composing||'　';
  $('cands').innerHTML='';
  const list=composing?candidates():phraseCandidates();
+ const CANDIDATES_PER_PAGE=candidatesPerPage();
  const totalPages=Math.max(1,Math.ceil(list.length/CANDIDATES_PER_PAGE));
  candidatePage=Math.min(candidatePage,totalPages-1);
  const pageWords=list.slice(candidatePage*CANDIDATES_PER_PAGE,(candidatePage+1)*CANDIDATES_PER_PAGE);
@@ -132,9 +133,6 @@ function makeKeys(){
  };
  wrap.appendChild(tone1);
  $('keys').appendChild(wrap);
- for(let i=0;i<3;i++){
-  const z=document.createElement('span');z.className='blank';$('keys').appendChild(z);
- }
 }
 let favs=JSON.parse(localStorage.getItem('zhuyinFavs')||'["我要","不要","幫忙","上廁所","休息"]');
 function saveFav(i){
@@ -157,4 +155,4 @@ function renderFavs(){
 $('speak').onclick=()=>say(sentence);
 $('clear').onclick=()=>{sentence='';composing='';candidatePage=0;render()};
 makeKeys();renderFavs();render();
-if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=15.4');
+if('serviceWorker'in navigator)navigator.serviceWorker.register('./sw.js?v=15.6');

@@ -27,7 +27,7 @@ main{width:100%;max-width:1500px;margin:0 auto;padding:10px;display:flex;flex-di
 #keys{display:grid;grid-template-columns:repeat(11,minmax(0,1fr));grid-template-rows:repeat(5,minmax(0,1fr));gap:6px}
 .key{width:100%;min-width:0;height:clamp(56px,9vh,90px);padding:0;border:0;border-radius:12px;background:#fff;color:#0874dc;box-shadow:0 2px 5px #00000012;font-family:inherit;font-size:clamp(28px,3.8vw,45px);font-weight:900;line-height:1;touch-action:manipulation}
 .key.tone{background:#ffe99b}.key.action{background:#bce9c8;font-size:clamp(21px,3vw,30px)}
-.blank{visibility:hidden}.one-tone-wrap{grid-column:2 / span 7;min-width:0;display:flex}
+.blank{visibility:hidden}.one-tone-wrap{grid-column:2 / span 9;min-width:0;display:flex}
 .one-tone{height:100%;width:100%;border:2px solid #cfd8df;border-radius:12px;background:#fff;display:flex;justify-content:center;align-items:center;touch-action:manipulation}
 .one-tone-dot{width:clamp(30px,5vh,53px);height:clamp(30px,5vh,53px);border-radius:50%;background:#e21b16}
 footer{text-align:center;color:#587891;font-size:clamp(13px,1.6vw,19px);padding:4px 3px;font-weight:700}
@@ -82,6 +82,21 @@ footer .source{display:block;font-size:clamp(11px,1.2vw,14px);font-weight:400;li
  .cand-page-nav{min-width:44px;min-height:44px;font-size:23px}
  .cand-page-info{font-size:13px}
 }
+
+/* v15.5: fill the candidate row across the iPad/desktop width */
+@media(min-width:601px){
+ #cands:has(.cand-page-nav){display:grid;grid-template-columns:repeat(10,minmax(0,1fr)) minmax(46px,.8fr);gap:clamp(4px,.55vw,9px);align-items:stretch;min-height:clamp(56px,7vh,76px);overflow:hidden;flex-wrap:nowrap}
+ #cands:has(.cand-page-nav) .cand,#cands:has(.cand-page-nav) .cand-page-nav{width:100%;min-width:0;height:100%;min-height:0;padding:3px 1px;font-size:clamp(22px,2.7vw,35px)}
+ #cands:has(.cand-page-nav) .cand-page-info{display:flex;align-items:center;justify-content:center;font-size:clamp(13px,1.4vw,19px)}
+}
+
+/* v15.6: 12 large candidates on iPad/desktop, fill available width. */
+@media(min-width:601px){
+ #cands:has(.cand-page-nav){display:flex;flex-wrap:nowrap;align-items:stretch;gap:clamp(3px,.35vw,7px);overflow:hidden;min-height:clamp(56px,7vh,76px)}
+ #cands:has(.cand-page-nav) .cand{flex:1 1 0;min-width:0;width:auto;height:auto;padding:3px 0;font-size:clamp(20px,2.3vw,32px)}
+ #cands:has(.cand-page-nav) .cand-page-nav{flex:0 0 clamp(45px,4.5vw,62px);width:auto;height:auto;min-width:0;padding:3px 0}
+ #cands:has(.cand-page-nav) .cand-page-info{flex:0 0 53px;white-space:nowrap;font-size:clamp(12px,1.2vw,17px)}
+}
 </style>
 </head>
 <body>
@@ -100,8 +115,8 @@ footer .source{display:block;font-size:clamp(11px,1.2vw,14px);font-weight:400;li
 <section class="keyboard"><div id="keys"></div></section>
 <footer>國立臺南大學特教系 臧永佳 AI設計開發<span class="source">字音資料：教育部《國語辭典簡編本》（2026-09-29）；注音發音：教育部《國語注音符號手冊》（CC BY 4.0）</span></footer>
 </main>
-<script src="./zhuyin-dictionary.js?v=15.4"></script>
-<script src="./app.js?v=15.4"></script>
+<script src="./zhuyin-dictionary.js?v=15.6"></script>
+<script src="./app.js?v=15.6"></script>
 
 </body>
 </html>
